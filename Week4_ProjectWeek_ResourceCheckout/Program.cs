@@ -87,17 +87,16 @@ namespace Week4_ProjectWeek_ResourceCheckout
                     Console.WriteLine("*\t\t\t\t\t*");
                         //int bookIndex = -1;
                     int bookIndex = Array.IndexOf(checkedOut, false);
-                    while (bookIndex != -1)
-                    {
-                        bookIndex = Array.IndexOf(checkedOut, false, bookIndex + 1);
-                        if (bookIndex > -1)
-                            Console.WriteLine("*\t" + resources[bookIndex] + "\t\t\t\t*");
-                    }
-                        bookIndex = -1;//for test
                     if (bookIndex == -1)
                     {
                         Console.WriteLine("*\t(All resources checked out)\t*");
                         //break;
+                    }
+                    while (bookIndex != -1)
+                    {
+                        if (bookIndex > -1)
+                            Console.WriteLine("*\t" + resources[bookIndex] + "\t\t\t\t*");
+                        bookIndex = Array.IndexOf(checkedOut, false, bookIndex + 1);
                     }
                     Console.WriteLine("*\t\t\t\t\t*");
                     Console.WriteLine("*****************************************");
