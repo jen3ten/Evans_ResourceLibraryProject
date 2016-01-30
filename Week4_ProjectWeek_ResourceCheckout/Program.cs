@@ -10,8 +10,10 @@ namespace Week4_ProjectWeek_ResourceCheckout
     {
         static void mainMenu()
         {
-            //Turn the menu section below into a method???
             //Print a menu of user options, including letter codes used to access the options
+            //This code was saved in a method, but could have easily been typed directly into
+            //the main() method, as it is only called once.
+            //It was written and kept primarily for experimentation and practice.
             Console.WriteLine("*****************************************");
             Console.WriteLine("*\tMENU\t\t\t\t*");
             Console.WriteLine("*\t\t\t\t\t*");
@@ -30,10 +32,10 @@ namespace Week4_ProjectWeek_ResourceCheckout
         static void Main(string[] args)
         {
             //Create Students array which holds student names
-            string[] students = { "Abbey", "Brian", "Charlie", "Delaney", "Erin" };
+            string[] students = { "Jen", "Imari", "Quinn", "Mary", "Kim" };
             Array.Sort(students);
 
-            //Create Accounts arrays for each student which holds checked out items
+            //Create Accounts arrays for each student which hold checked out items
             //Set initial value to empty string
             string[] account0 = { "", "", "" };  
             string[] account1 = { "", "", "" };
@@ -43,8 +45,7 @@ namespace Week4_ProjectWeek_ResourceCheckout
             string[] studentAccount = new string[3];
 
             //Create Resource array which holds resource names
-            //string[] resources = { "Database Design", "SQL Queries", "JavaScript", "C# for Dummies", "C# Player's Guide", "HTML & CSS", "Agile Methodology", "Scrum 101", "Hooray for Arrays!", "Getting Along with Git" };
-            string[] resources = { "a", "b", "c", "d", "e", "f", "g", "h", "i", "j" };
+            string[] resources = { "Database Design", "SQL Queries", "JavaScript", "C# for Dummies", "C# Player's Guide", "HTML & CSS", "Agile Methodology", "Scrum 101", "Hooray for Arrays!", "Getting Along with Git" };
             Array.Sort(resources);
 
             //Create Checkout array which holds flag showing whether resource is checked "out" or "in".
@@ -58,25 +59,25 @@ namespace Week4_ProjectWeek_ResourceCheckout
             Console.WriteLine("WELCOME TO THE WE CAN CODE IT RESOURCE LIBRARY");
             Console.WriteLine();
 
-            //While loop to run code as long as exit is not pressed?
+            //do-While loop will continue to re-run code until exit command is pressed
             do
             {
-            mainMenu(); //call main menu method
-            string menuOption = Console.ReadLine();
-            Console.WriteLine();
+                mainMenu(); //call main menu method
+                string menuOption = Console.ReadLine();
+                Console.WriteLine();
 
-            //Switch statement runs code based on option chosen from menu
-            int studentRow = 0;
-            switch (menuOption.ToUpper())
-            {
-                case "S":       //View list of studentsAcct
+                //Switch statement runs code based on option chosen from menu
+                //int studentRow = 0;   I don't think this was used.
+                switch (menuOption.ToUpper())       //User can enter a lower case or upper case menu option
+                {
+                case "S":       //View list of students
                     Console.WriteLine("*****************************************");
                     Console.WriteLine("*\tSTUDENT LIST\t\t\t*");
                     Console.WriteLine("*\t\t\t\t\t*");
                     foreach (string student in students)
                     {
-                        Console.WriteLine("*\t" + student + "\t\t\t\t*");
-                    }
+                        Console.WriteLine($"*\t{student,-32}*");
+                        }
                     Console.WriteLine("*\t\t\t\t\t*");
                     Console.WriteLine("*****************************************");
                     break;
@@ -85,18 +86,15 @@ namespace Week4_ProjectWeek_ResourceCheckout
                     Console.WriteLine("*****************************************");
                     Console.WriteLine("*\tRESOURCES LIST\t\t\t*");
                     Console.WriteLine("*\t\t\t\t\t*");
-                        //int bookIndex = -1;
-                    int bookIndex = Array.IndexOf(checkedOut, false);
-                    if (bookIndex == -1)
+                    int bookIndex = Array.IndexOf(checkedOut, false);       //Find the first index in which resource is available (checkedOut = false)
+                    if (bookIndex == -1)        //If all elements are true, then all books are checked out.  False is not found.
                     {
                         Console.WriteLine("*\t(All resources checked out)\t*");
-                        //break;
                     }
-                    while (bookIndex != -1)
+                    while (bookIndex != -1)     //If available resource was found, continue searching for additional resources
                     {
-                        if (bookIndex > -1)
-                            Console.WriteLine("*\t" + resources[bookIndex] + "\t\t\t\t*");
-                        bookIndex = Array.IndexOf(checkedOut, false, bookIndex + 1);
+                        Console.WriteLine($"*\t{resources[bookIndex],-32}*");       //Print the resource that has same index as checkedOut = false
+                        bookIndex = Array.IndexOf(checkedOut, false, bookIndex + 1);        //Continue searching for next available item, until no more are found
                     }
                     Console.WriteLine("*\t\t\t\t\t*");
                     Console.WriteLine("*****************************************");
@@ -104,16 +102,12 @@ namespace Week4_ProjectWeek_ResourceCheckout
 
                 case "A":       //View student account
                     Console.Write("Please enter the student's name: ");
-                    string studentName = Console.ReadLine().ToUpper();
+                    string studentName = Console.ReadLine().ToUpper();      //So that printout is in caps
                     int index = 0;            //counts which index I am on
-                    //int index = -1;             //index saves the index value of the 
                     foreach (string name in students)
                     {
-                        //Console.WriteLine(name);
                         if (name.Equals(studentName, StringComparison.CurrentCultureIgnoreCase))
                         {
-                            //Console.WriteLine($"{name} is a match. Index is {index}");
-                            //index number will be used to reference student
                             break;      //break out of loop when student name is found
                         }
                         index++;
@@ -121,7 +115,7 @@ namespace Week4_ProjectWeek_ResourceCheckout
                     switch (index)
                     {
                         case 0:
-                            studentAccount = account0;
+                            studentAccount = account0;      //Assign the student's account array to a generic array
                             break;
                         case 1:
                             studentAccount = account1;
@@ -135,29 +129,29 @@ namespace Week4_ProjectWeek_ResourceCheckout
                         case 4:
                             studentAccount = account4;
                             break;
-                        default:
-                            Console.WriteLine();
+                        default:        
                             Console.WriteLine("Student's name was not found.");
+                            Console.WriteLine();
                             break;
                     }
-                    if (index <= 4)         //If the user name is found, search for their resources
+                    Array.Sort(studentAccount);   //Sort items in student account so they print alphabetically
+                    if (index < students.Length)         //If the user name is found, search for their resources
                     {
-                        bool noResources = true;
+                        bool noResources = true;        //Set flag with default value indicating no items found in student's account
                         Console.WriteLine("*****************************************");
                         Console.WriteLine($"*\t{studentName}'S ACCOUNT\t\t\t*");
                         Console.WriteLine("*\t\t\t\t\t*");
 
                         foreach (string item in studentAccount)
                         {
-                            if (item != "")
+                            if (item != "")     //An item was found...
                             {
-                                Console.WriteLine($"*\t{item}\t\t\t\t*");
-                                noResources = false;
+                                Console.WriteLine($"*\t{item,-32}*");  //Print out the name of the item
+                                noResources = false;           //Set flag to false
                             }
                         }
                         if (noResources)
                             Console.WriteLine("*\t(No resources checked out)\t*");
-
                         Console.WriteLine("*\t\t\t\t\t*");
                         Console.WriteLine("*****************************************");
                     }
@@ -165,12 +159,11 @@ namespace Week4_ProjectWeek_ResourceCheckout
 
                 case "C":       //Checkout item
                     Console.Write("Please enter the student's name: ");
-                    studentName = Console.ReadLine().ToUpper();
+                    studentName = Console.ReadLine();       
                     int nameIndex = 0;
                     foreach (string name in students)
                     {
-                        //Console.WriteLine(name);
-                        if (name.Equals(studentName, StringComparison.CurrentCultureIgnoreCase))
+                        if (name.Equals(studentName, StringComparison.CurrentCultureIgnoreCase)) //Look for name in array
                         {
                             //index number will be used to reference student
                             break;      //break out of loop when student name is found
@@ -180,7 +173,7 @@ namespace Week4_ProjectWeek_ResourceCheckout
                     switch (nameIndex)
                     {
                         case 0:
-                            studentAccount = account0;
+                            studentAccount = account0;      //Assign student account to a generic account
                             break;
                         case 1:
                             studentAccount = account1;
@@ -195,75 +188,66 @@ namespace Week4_ProjectWeek_ResourceCheckout
                             studentAccount = account4;
                             break;
                         default:
-                            Console.WriteLine();
                             Console.WriteLine("Student's name was not found.");
                             break;
                     }
                     int checkNumItems = 0;
-                    if (nameIndex <= 4)   //If the user name is found, see if they checked out 3 items
+                    if (nameIndex < students.Length)   //If the user name is found, see if they checked out 3 items
                     {
-                        checkNumItems = Array.IndexOf(studentAccount, "");
-                        if (checkNumItems == -1)
+                        //Look for blanks in the student account which represent availability
+                        //to check out additional resources; save index of first match
+                        checkNumItems = Array.IndexOf(studentAccount, ""); 
+                        if (checkNumItems == -1)  //If no blanks are found the student can't check out any items
                         {
                             Console.WriteLine("The student has checked out a maximum of 3 items.");
                         }
                         else
                         {
-                            int resIndex = 0;
+                            int resIndex = 0;     //Use resIndex to mark index of resource in array
                             Console.Write("Please enter the resource to be checked out: ");
                             string resourceOut = Console.ReadLine();
-                            //Console.WriteLine(resourceOut);
                             foreach (string item in resources)
                             {
-                                //Console.WriteLine(item);
+                                //Search the array of resources until the one the user entered is found
                                 if (item.Equals(resourceOut, StringComparison.CurrentCultureIgnoreCase))
                                 {
-                                    //Console.WriteLine($"I found {item}");
-
                                     //index number will be used to reference resource
                                     break;      //break out of loop when resource name is found
                                 }
-                                resIndex++;
+                                resIndex++;     //resIndex will mark which index of array matches user input
                             }
-                            if (resIndex == 10)
+                            if (resIndex == resources.Length)   //when all resources are checked and there is
+                                    //no match the index marker will be the length of the array
                             {
                                 Console.WriteLine("Resource name has not been found.");
                             }
-                            else if (checkedOut[resIndex])
+                            else if (checkedOut[resIndex])  //use same index as resource array and check whether
+                                    //checkedOut array is true, indicating resources is already checked out
                             {
                                 Console.WriteLine($"I'm sorry, {resourceOut} has already been checked out.");
                             }
-                            else if (!checkedOut[resIndex])
+                            else if (!checkedOut[resIndex]) //if resource is not already checked out...
                             {
                                 Console.WriteLine($"{students[nameIndex]} checked out {resourceOut}.");
-                                checkedOut[resIndex] = true;                //Set the value of the checkedOut array to true to designate item has been checked out
-                                //Console.WriteLine($"{resIndex} is the resource index.");
+                                checkedOut[resIndex] = true;       //Set the value of the checkedOut array to true to designate item has been checked out
                                 switch (nameIndex)
                                 {
                                     case 0:
-                                        //studentAccount = account0;
-                                        account0[checkNumItems] = resourceOut;
-                                        //Console.WriteLine($"0 student Abbey checked out {resourceOut}");
+                                        account0[checkNumItems] = resourceOut;   //Assign the empty index with name of resource
                                         break;
                                     case 1:
-                                        //studentAccount = account1;
                                         account1[checkNumItems] = resourceOut;
                                         break;
                                     case 2:
-                                        // studentAccount = account2;
                                         account2[checkNumItems] = resourceOut;
                                         break;
                                     case 3:
-                                        //studentAccount = account3;
                                         account3[checkNumItems] = resourceOut;
                                         break;
                                     case 4:
-                                        //studentAccount = account4;
                                         account4[checkNumItems] = resourceOut;
                                         break;
                                     default:
-                                        //Console.WriteLine();
-                                        //Console.WriteLine("Student's name was not found.");
                                         break;
                                 }
                             }
@@ -273,24 +257,21 @@ namespace Week4_ProjectWeek_ResourceCheckout
                     break;
 
                 case "R":       //Return item
-                    //Console.WriteLine("Return item");
                     Console.Write("Please enter the student's name: ");
-                    studentName = Console.ReadLine().ToUpper();
+                    studentName = Console.ReadLine();     
                     nameIndex = 0;
-                    foreach (string name in students)
+                    foreach (string name in students)  //Check array of student names for match to user input
                     {
-                        //Console.WriteLine(name);
                         if (name.Equals(studentName, StringComparison.CurrentCultureIgnoreCase))
                         {
-                            //index number will be used to reference student
                             break;      //break out of loop when student name is found
                         }
-                        nameIndex++;
+                        nameIndex++;    //variable to save index of array that matches user input
                     }
                     switch (nameIndex)
                     {
                         case 0:
-                            studentAccount = account0;
+                            studentAccount = account0;  //Assign student account to generic array
                             break;
                         case 1:
                             studentAccount = account1;
@@ -305,52 +286,41 @@ namespace Week4_ProjectWeek_ResourceCheckout
                             studentAccount = account4;
                             break;
                         default:
-                            Console.WriteLine();
                             Console.WriteLine("Student's name was not found.");
                             break;
                     }
                     checkNumItems = 0;
-                    Array.Sort(studentAccount);
-                    if (nameIndex <= 4)   //If the user name is found, see if they checked out any items
+                    Array.Sort(studentAccount);     //Sort so that all available indexes move to begining of array
+                    if (nameIndex < students.Length)   //If the user name is found, see if they checked out any items
                     {
-                        checkNumItems = Array.LastIndexOf(studentAccount, "");
-                        if (checkNumItems == studentAccount.Length - 1)
+                        checkNumItems = Array.LastIndexOf(studentAccount, "");      //Look for available index in student account, from the end
+                        if (checkNumItems == studentAccount.Length - 1)     //If there is available index at the end, they are all available
                         {
                             Console.WriteLine("The student has not checked out any items.");
                         }
                         else
                         {
-                            int resIndex = 0;
                             Console.Write("Please enter the resource to be returned: ");
                             string resourceIn = Console.ReadLine();
-                            //Console.WriteLine(resourceIn);
+                            int resIndex = 0;        //index number will be used to reference resource index
                             foreach (string item in resources)
                             {
-                                //Console.WriteLine(item);
-                                if (item.Equals(resourceIn, StringComparison.CurrentCultureIgnoreCase))
+                                if (item.Equals(resourceIn, StringComparison.CurrentCultureIgnoreCase))     //search for the item to be returned in the resources array
                                 {
-                                    //Console.WriteLine($"I found {item}");
-
-                                    //index number will be used to reference resource
                                     break;      //break out of loop when resource name is found
                                 }
                                 resIndex++;
                             }
-                            if (resIndex == 10)
+                            if (resIndex == resources.Length) //If index is length of array, the item was not found
                             {
                                 Console.WriteLine("Resource name has not been found.");
                             }
-                            //else if (checkedOut[resIndex])
-                            //{
-                            //    Console.WriteLine($"I'm sorry, {resourceIn} has already been checked out.");
-                            //}
-                            //else if (!checkedOut[resIndex])
-                            //{
-                            //    Console.WriteLine($"{students[nameIndex]} checked out {resourceIn}.");
-                            checkedOut[resIndex] = false;                //Set the value of the checkedOut array to false to designate item is available
-                                                                         //Console.WriteLine($"{resIndex} is the resource index.");
+                            else
+                            {
+                                checkedOut[resIndex] = false;               
+                                //Set the value of the checkedOut array to false to designate item is available
                                 int itemIndex = 0;
-                            foreach (string item in studentAccount)
+                                foreach (string item in studentAccount)
                                 {
                                     if (item.Equals(resourceIn, StringComparison.CurrentCultureIgnoreCase))
                                     {
@@ -358,39 +328,37 @@ namespace Week4_ProjectWeek_ResourceCheckout
                                     }
                                     itemIndex++;
                                 }
-                                switch (nameIndex)
+                                if (itemIndex == studentAccount.Length)     //If the index is the length of the array, the resource was not found in student account
                                 {
+                                    Console.WriteLine($"{students[nameIndex]} has not checked out {resourceIn}.");
+                                }
+                                else        //The resource was found in the student account at index "itemIndex"
+                                {
+                                    switch (nameIndex)
+                                    {
                                         case 0:
-                                            //studentAccount = account0;
-                                            account0[itemIndex] = "";
-                                            //Console.WriteLine($"0 student Abbey checked out {resourceOut}");
+                                            account0[itemIndex] = "";   //Index where item found, reset to ""
                                             break;
                                         case 1:
-                                            //studentAccount = account1;
                                             account1[itemIndex] = "";
                                             break;
                                         case 2:
-                                            // studentAccount = account2;
                                             account2[itemIndex] = "";
                                             break;
                                         case 3:
-                                            //studentAccount = account3;
                                             account3[itemIndex] = "";
                                             break;
                                         case 4:
-                                            //studentAccount = account4;
                                             account4[itemIndex] = "";
                                             break;
                                         default:
-                                            //Console.WriteLine();
-                                            //Console.WriteLine("Student's name was not found.");
                                             break;
-                                    //}
+                                    }
                                 }
+                            }
                         }
                     }
                     Console.WriteLine();
-
                     break;
 
                 case "X":       //Exit
@@ -400,11 +368,10 @@ namespace Week4_ProjectWeek_ResourceCheckout
 
                 default:        //Menu option was not found
                     Console.WriteLine("The code you entered was not found.  Please enter a valid code.");
-                    //Run menu method
+                    Console.WriteLine();
                     break;
-            }
-            } 
-            while (!exitPressed);
+                }  
+            } while (!exitPressed);
 
             Console.WriteLine();
             Console.Write("You have exited the program.  Try again? ");
@@ -413,7 +380,6 @@ namespace Week4_ProjectWeek_ResourceCheckout
             {
                 Main(args);
             }
-
         }
     }
 }
